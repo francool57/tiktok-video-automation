@@ -11,9 +11,10 @@ First 15s of the final video:
 **Note:** Default font is Arial Black, in example im using Yataghan Regular
 
 ![Alt text](https://img001.prntscr.com/file/img001/A58hd0TlS-a3_6mKYKGpyA.png)
-**Alt:** Terminal example
-## Run the script
 
+**Alt:** Terminal example
+
+## Run the script
 To deploy this project start with
 
 ```cmd
