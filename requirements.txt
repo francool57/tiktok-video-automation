@@ -1,0 +1,9 @@
+groq
+moviepy
+ffmpeg
+numpy==1.26.4
+ctranslate2==3.24.0
+opencv-python
+torch
+youtube-search-python
+faster-whisper
