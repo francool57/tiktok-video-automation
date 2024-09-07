@@ -29,25 +29,35 @@ def link_gen(search):
     print(f'{Bcolors.GREEN}Youtube video was found{Bcolors.END}')
     return link
 
-def Download(search = 'minecraft parkour gameplay no copyright 4k', file_name_dir = r''):
-    youtubeObject = YouTube(link_gen(search))
-    streams = youtubeObject.streams
-    if int(youtubeObject.length) < 900:
-        stream = (streams.filter(
-                                    only_video=True, 
-                                    res='1440p', 
-                                    video_codec='vp9'
-                                    ))
-        try:
-            execute(stream, file_name_dir)
-        except BaseException as e: 
-            print(f"{Bcolors.RED}An error has occurred: ||{str(e)}|| Re-running{Bcolors.END}")
+def Download(search = 'minecraft parkour gameplay no copyright 4k', url = None, resolution = '1080p'):
+    if url == None:
+        youtubeObject = YouTube(link_gen(search))
+        streams = youtubeObject.streams
+        if int(youtubeObject.length) < 900:
+            stream = (streams.filter(
+                                        only_video=True, 
+                                        res='1080p', 
+                                        video_codec='vp9'
+                                        ))
+            try:
+                execute(stream)
+            except BaseException as e: 
+                print(f"{Bcolors.RED}An error has occurred: ||{str(e)}|| Re-running{Bcolors.END}")
+                Download()
+        else:
+            print(f'{Bcolors.RED}Video was too big, searching again{Bcolors.END}')
             Download()
     else:
-        print(f'{Bcolors.RED}Video was too big, searching again{Bcolors.END}')
-        Download()
+        youtubeObject = YouTube(url)
+        streams = youtubeObject.streams
+        stream = (streams.filter(
+                            only_video=True, 
+                            res=resolution, 
+                            video_codec='vp9'
+                            ))
+        execute(stream)
 
-def execute(stream, file_name_dir):
+def execute(stream):
     print(f'{Bcolors.PINK}Downloading...{Bcolors.END}')
-    stream.first().download(filename=file_name_dir)
+    stream.first().download(filename='fullyoutube.mp4')
     print(f"{Bcolors.GREEN}Download was completed{Bcolors.END}")

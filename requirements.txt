@@ -6,5 +6,3 @@ ctranslate2==3.24.0
 opencv-python
 torch
 youtube-search-python
-faster-whisper
-cuda-python

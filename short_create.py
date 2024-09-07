@@ -1,13 +1,15 @@
 from groq import Groq
 from moviepy.editor import *
-from moviepy.config import change_settings
 from faster_whisper import WhisperModel
 import yt_sc as yut
 import VoiceRSSWebAPI
 import random
 import base64
 import time as tm
+import json
+import shutil
 
+os.system('cls')
 banner = '''    
 ██╗░░██╗██╗░░██╗░█████╗░███╗░░██╗███╗░░██╗██╗░░░██╗
 ╚██╗██╔╝╚██╗██╔╝██╔══██╗████╗░██║████╗░██║╚██╗░██╔╝
@@ -20,25 +22,30 @@ banner = '''
 print(banner)
 starttime = tm.time()
 
-#TODO: Change variables that fit you
-path = r'YOUR_FILES_PATH\\'
+from moviepy.config import change_settings
+with open('settings.json', 'r') as f:
+    data = json.load(f)
+    path = data['path']
+    groc_api_key = data['groc_api_key'] # Groc API key: https://console.groq.com/keys
+    voicerss_api = data['voicerss_api'] # VoiceRSS API key: https://www.voicerss.org/
+
 audio_file_mp3 = r"story_audio.mp3" 
-video_file_mp4 = r"fullyutubevideo.mp4" 
-hookfile = r"hookaudio.mp3" 
-storyhook = 'I was abducted by my own uncle, but he never expected what i did to him.' # First words of the video, do as the example
-groc_api_key = 'YOUR_GROC_API' # Groc API key: https://console.groq.com/keys
-voicerss_api = 'YOUR_VOICERSS_API' # VoiceRSS API key: https://www.voicerss.org/
+video_file_mp4 = r"\..\fullyoutube.mp4" 
+hookfile = r"hookaudio.mp3"
+
+storyhook = input('Create a first line for your story.\nShould be similar to: "I got abandoned in a forest by my family, but i got revenge on them"\n> ')
+
+path_mgk = shutil.which("magick") 
+change_settings({"IMAGEMAGICK_BINARY": path_mgk})
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-change_settings({"IMAGEMAGICK_BINARY": r"c:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick.exe"}) # ImageMagick executable input with
-
 # Find random youtube video and download (no setting will result in minecraft parkout)
 
 try:
-    yut.Download(file_name_dir=path+video_file_mp4) # Implement search='YOUR_DESIRED_SEARCH' to your desires 
+    yut.Download() # Implement search='YOUR_DESIRED_SEARCH' to your desires 
 except BaseException as e:
     print(f"{yut.Bcolors.RED}An error has occurred: ||{str(e)}||. Re-running...{yut.Bcolors.END}") # Errors that can be resolved with 
-    yut.Download(file_name_dir=path+video_file_mp4)                                                                                 # re-running the script will fix themselves
+    yut.Download()                                                                                 # re-running the script will fix themselves
 
 
 # Groc API
@@ -79,7 +86,7 @@ voice = VoiceRSSWebAPI.speech({
 })                              # Story voiceover
 
 # b64 to mp3
-wav_file = open(os.path.join(path, audio_file_mp3), "wb")   
+wav_file = open((path+audio_file_mp3), "wb")   
 decode_string = base64.b64decode(voice['response'])
 wav_file.write(decode_string)
 print(f'{yut.Bcolors.GREEN}Audio was created as story_audio.mp3{yut.Bcolors.END}')
@@ -97,7 +104,7 @@ voice = VoiceRSSWebAPI.speech({
     'b64': 'true'
 })                              # Hook voiceover
 
-wav_file = open(os.path.join(path, hookfile), "wb")
+wav_file = open((path+hookfile), "wb")
 decode_string = base64.b64decode(voice['response'])
 wav_file.write(decode_string)
 print(f'{yut.Bcolors.GREEN}Audio was created as hookaudio.mp3{yut.Bcolors.END}')
@@ -136,7 +143,10 @@ def video_create():
     model_size = "large-v3"
 
     # stt and word division
-    model = WhisperModel(model_size, device="cuda", compute_type="float16")
+    try:
+        model = WhisperModel(model_size, device="cuda", compute_type="float16")
+    except RuntimeError:
+        raise (RuntimeError, 'Re-do setup.py')
     segments, info = model.transcribe(path+audio_file_mp3, word_timestamps=True)
     segments2, info2 = model.transcribe(path+hookfile, word_timestamps=True)
     print(f'{yut.Bcolors.CYAN}Fast-Whisper model loaded{yut.Bcolors.END}')
