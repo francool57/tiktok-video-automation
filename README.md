@@ -17,6 +17,12 @@ First 15s of the final video: (no sound here)
 
 ## How To Deploy
 
+Install CUDA
+
+```cmd
+  wget https://developer.download.nvidia.com/compute/cuda/12.6.1/local_installers/cuda_12.6.1_560.94_windows.exe
+```
+
 Clone the git repositorie or download [here](https://github.com/francool57/tiktok-video-automation/archive/refs/heads/main.zip)
 ```cmd
   git clone https://github.com/francool57/tiktok-video-automation.git
