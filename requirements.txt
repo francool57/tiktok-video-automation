@@ -7,3 +7,4 @@ opencv-python
 torch
 youtube-search-python
 faster-whisper
+cuda-python
