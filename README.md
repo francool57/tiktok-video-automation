@@ -8,7 +8,7 @@ A tiktok style video automated using: [Groq AI](https://groq.com/) - to generate
 
 First 15s of the final video: (no sound here)
 
-![](https://github.com/francool57/tiktok-video-automation/blob/main/final_tiktok_gif.gif)
+![](https://github.com/francool57/tiktok-video-automation/blob/demonstration-files/final_tiktok_gif.gif)
 **Note:** Default font is Arial Black, in example im using Yataghan Regular
 
 ![Alt text](https://img001.prntscr.com/file/img001/1j_auwOBTUakiTCKrDEdvA.png)
